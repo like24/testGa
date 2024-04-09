@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 引入gsap和Scrolltrigger  js文件 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/ScrollTrigger.min.js"></script>
+    <title>Document</title>
+  </head>
+  <style>
+    body {
+      height: 5000px;
+    }
+    .screen {
+      height: 100vh;
+      width: 100%;
+      position: relative;
+    }
+    .kv-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100vh;
+    }
+    .kv-content div,
+    .summary-content div {
+      width: 100%;
+      height: 100%;
+    }
+
+    .summary-content {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: 100%;
+      height: 100vh;
+    }
+    .summary-content video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+  <body>
+    <section class="screen section1">
+      <div class="kv-content">
+        <div style="background: #f00">za首页</div>
+      </div>
+    </section>
+    <section class="screen section2">
+      <div class="summary-content">
+        <video class="video" src="./video.mp4"></video>
+      </div>
+    </section>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script>
+    ScrollTrigger.create({
+      trigger: '.section1',
+      start: 'top top',
+      end: '+=1000',
+      scrub: true,
+      animation:
+        // gsap.fromTo('.kv-content',{scale:1},{scale:0.5})
+        gsap
+          .timeline()
+          .fromTo('.kv-content', { scale: 1 }, { scale: 0.5 })
+          .fromTo(
+            '.summary-content',
+            { width: '50%', height: '50vh' },
+            { width: '100%', height: '100vh' },
+            '<'
+          )
+    })
+    ScrollTrigger.create({
+      trigger: '.section2',
+      start: 'top top',
+      end: '+=6000',
+      scrub: true,
+      pin: true,
+      onUpdate(self) {
+        const summary = document.querySelector('.video')
+
+        // console.log(self.progress)
+        // self.progress  0-1 进度
+        // summary.duration  视频总时长
+        summary.currentTime = self.progress * summary.duration
+      }
+    })
+  </script>
+</html>
